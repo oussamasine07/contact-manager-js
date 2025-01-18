@@ -178,7 +178,20 @@ phoneInput.addEventListener("blur", () => {
 // add contact functionality
 const contacts = localStorage.getItem("contacts") ? JSON.parse(localStorage.getItem("contacts")) : [];
 
+
 contactForm.addEventListener("submit", e => {
     e.preventDefault();
-    
+    const newContact = {
+        id: contacts.length > 0 ? contacts[contacts.length - 1 ].id + 1 : 1,
+        firstName: firstNameInput.value,
+        lastName: lastNameInput.value,
+        email: emailInput.value,
+        phone: phoneInput.value,
+        gender: genderMaleRadio.checked ? "male" : "female",
+        city: cityInput.value 
+    }
+
+    contacts.push(newContact);
+
+    localStorage.setItem("contact", JSON.stringify(contacts))
 });
