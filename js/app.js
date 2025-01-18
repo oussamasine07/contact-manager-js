@@ -35,15 +35,49 @@ const isEmpty = ( input ) => {
     if ( input.value == "" ) {
         error = {
             isError: true,
-            message: `the ${ input.dataset.inputName } fiels is required`
+            message: `the ${ input.dataset.name } fiels is required`
         }
     }
     return error;
 }
 
-// validate email
-const isValidaEmail = ( input ) => {
-    let inputValue = input.value;
 
+// validate email
+const isValidEmail = ( input ) => {
+    
+    let inputValue = input.value;
+    let emailPatern = /^([a-zA-Z0-9_.-]+)@([a-z]+)\.([a-z]+)$/;
+    if ( !emailPatern.test( inputValue ) ) {
+        error = {
+            isError: true,
+            message: `the ${ input.dataset.name } fiels is not a valid email`
+        }
+    }
+    return error;
 }
+
 // validate text
+const isValidText = ( input ) => {
+    let inputValue = input.value;
+    let textPatern = /^[a-z\s]+$/;
+    if ( !textPatern.test( inputValue ) ) {
+        error = {
+            isError: true,
+            message: `the ${ input.dataset.name } fiels is not a valid text`
+        }
+    }
+    return error;
+}
+
+// validate phone
+const isValidPhone = ( input ) => {
+    let inputValue = input.value;
+    let phonePatern = /^((06)|(05)|(07))([0-9]{8})$/;
+    if ( !phonePatern.test( inputValue ) ) {
+        error = {
+            isError: true,
+            message: `the ${ input.dataset.name } fiels is not a valid phone number`
+        }
+    }
+    return error;
+}
