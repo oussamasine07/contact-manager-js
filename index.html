@@ -71,16 +71,16 @@
                     <div
                         class="relative transform overflow-hidden rounded-lg bg-white shadow-xl transition-all sm:my-8 sm:w-full sm:max-w-lg">
                         <div class="bg-sky-950 px-4 pb-4 pt-5 sm:p-6 sm:pb-4">
-                            sm:flex sm:items-start
+                            <!-- sm:flex sm:items-start -->
                             <div class="text-center sm:mt-0 sm:text-left">
-                                <form class="border-gray-300 w-full">
+                                <form id="contact-form" class="border-gray-300 w-full">
                                     <div class="border-b border-gray-900/10 pb-12">
                                         <h2 class="text-2xl leading-3 text-center text-green-300 font-bold">Add new
                                             contact
                                         </h2>
 
                                         <div class="mt-10 grid grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-6">
-                                            <div class="col-span-3">
+                                            <div id="first-name-container" class="col-span-3">
                                                 <label for="street-address"
                                                     class="block text-sm/6 font-medium text-sky-100">First name</label>
                                                 <div class="mt-2">
@@ -88,11 +88,8 @@
                                                         class="block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6"
                                                         placeholder="First name" data-name="first name">
                                                 </div>
-                                                <span class="flex items-center font-medium tracking-wide text-red-500 text-xs mt-1 ml-1">
-                                                    Invalid username field !
-                                                </span>
                                             </div>
-                                            <div class="col-span-3">
+                                            <div id="last-name-container" class="col-span-3">
                                                 <label for="street-address"
                                                     class="block text-sm/6 font-medium text-sky-100">Last name</label>
                                                 <div class="mt-2">
@@ -104,7 +101,7 @@
                                         </div>
 
                                         <div class="mt-2 grid grid-cols-1 gap-x-6 gap-y-8 grid-cols-6">
-                                            <div class="col-span-full">
+                                            <div id="email-container" class="col-span-full">
                                                 <label for="street-address"
                                                     class="block text-sm/6 font-medium text-sky-100">Email</label>
                                                 <div class="mt-2">
@@ -123,7 +120,7 @@
                                                         <input id="gender-male" name="push-notifications"
                                                             type="radio" checked
                                                             class="relative size-4 appearance-none rounded-full border border-gray-300 bg-white before:absolute before:inset-1 before:rounded-full before:bg-white checked:border-indigo-600 checked:bg-indigo-600 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 disabled:border-gray-300 disabled:bg-gray-100 disabled:before:bg-gray-400 forced-colors:appearance-auto forced-colors:before:hidden [&:not(:checked)]:before:hidden">
-                                                        <label for="push-everything"
+                                                        <label for="gender-male"
                                                             class="block text-sm/6 font-medium text-sky-100">Male</label>
                                                     </div>
                                                 </div>
@@ -131,8 +128,7 @@
                                                     <div class="flex items-center gap-x-3">
                                                         <input id="gender-female" name="push-notifications" type="radio"
                                                             class="relative size-4 appearance-none rounded-full border border-gray-300 bg-white before:absolute before:inset-1 before:rounded-full before:bg-white checked:border-indigo-600 checked:bg-indigo-600 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 disabled:border-gray-300 disabled:bg-gray-100 disabled:before:bg-gray-400 forced-colors:appearance-auto forced-colors:before:hidden [&:not(:checked)]:before:hidden">
-                                                        <label for="push-email"
-                                                            class="block text-sm/6 font-medium text-sky-100">Female</label>
+                                                        <label for="gender-female" class="block text-sm/6 font-medium text-sky-100">Female</label>
                                                     </div>
                                                 </div>
                                             </div>
@@ -159,8 +155,8 @@
                                             </div>
                                         </div>
 
-                                        <div class="mt-2 grid grid-cols-1 gap-x-6 gap-y-8 grid-cols-6">
-                                            <div class="col-span-full">
+                                        <div  class="mt-2 grid grid-cols-1 gap-x-6 gap-y-8 grid-cols-6">
+                                            <div id="phone-container" class="col-span-full">
                                                 <label for="street-address" class="block text-sm/6 font-medium text-sky-100">Phone</label>
                                                 <div class="mt-2">
                                                     <input type="text" name="phone" id="phone" class="block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6"
