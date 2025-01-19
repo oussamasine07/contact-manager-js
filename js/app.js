@@ -194,20 +194,20 @@ const createListItem = ( contact ) => {
     contactItem.id = `contact-item-${ contact.id }`;
 
     contactItem.innerHTML = `
-        <div class="flex min-w-0 gap-x-4">
+        <div class="flex min-w-0 gap-x-4 items-center">
             <img class="size-12 flex-none rounded-full bg-gray-50" src="/assets/person.jpg" alt="">
             <div class="min-w-0 flex-auto">
                 <p class="text-sm/6 font-semibold text-sky-100">${ contact.firstName } ${ contact.lastName }</p>
-                <p class="mt-1 truncate text-sm text-blue-300">${ contact.email }</p>
+                <p class="mt-1 truncate text-sm text-blue-300 hidden md:block">${ contact.email }</p>
             </div>
         </div>
         <div class=" flex justify-between items-center">
             ${
                 contact.gender == "male" 
                 ? 
-                    '<span class="inline-flex items-center rounded-md bg-transparent px-2 py-1 text-xs font-medium text-sky-400 ring-1 ring-inset ring-sky-400">Male</span>' 
+                    '<span class="hidden md:block inline-flex items-center rounded-md bg-transparent px-2 py-1 text-xs font-medium text-sky-400 ring-1 ring-inset ring-sky-400">Male</span>' 
                 : 
-                    '<span class="inline-flex items-center rounded-md bg-transparent px-2 py-1 text-xs font-medium text-red-400 ring-1 ring-inset ring-red-400">Female</span>'
+                    '<span class="hidden md:block inline-flex items-center rounded-md bg-transparent px-2 py-1 text-xs font-medium text-red-400 ring-1 ring-inset ring-red-400">Female</span>'
             }
             
 
