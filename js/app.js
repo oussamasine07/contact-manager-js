@@ -32,6 +32,9 @@ const phoneContainer = document.getElementById("phone-container");
 
 const contactsList = document.getElementById("contacts-list");
 
+const singleContact = document.getElementById("show-single-contact");
+const closeSingleContact = document.getElementById("close-single-contact");
+
 // declare error object
 let error = {
     isError: false,
@@ -188,7 +191,7 @@ const clearInputs = () => {
 const createListItem = ( contact ) => {
     const contactItem = document.createElement("li");
     contactItem.className = "flex justify-between gap-x-6 py-5";
-    contact.id = `contact-item-${ contact.id }`;
+    contactItem.id = `contact-item-${ contact.id }`;
 
     contactItem.innerHTML = `
         <div class="flex min-w-0 gap-x-4">
@@ -208,7 +211,7 @@ const createListItem = ( contact ) => {
             }
             
 
-            <button class="bg-blue-500 border-2 border-blue-500 transition ease-in-out delay-150 hover:bg-transparent text-white font-bold text-sm ml-3 px-4 rounded-md ">show</button>
+            <button data-id="${ contact.id }" onclick="showSingleContact(this)" class="bg-blue-500 border-2 border-blue-500 transition ease-in-out delay-150 hover:bg-transparent text-white font-bold text-sm ml-3 px-4 rounded-md ">show</button>
         </div>
     `;
 
@@ -222,10 +225,31 @@ const listContacts = ( contacts ) => {
     });
 }
 
+
 // add contact functionality
 const contacts = localStorage.getItem("contacts") ? JSON.parse(localStorage.getItem("contacts")) : [];
 
 listContacts( contacts );
+
+const showSingleContact = ( e ) => {
+    const contactId = parseInt(e.dataset.id);
+    const foundContact = contacts.filter( contact => contact.id == contactId )[0];
+
+    document.getElementById("first-name-show").innerText = foundContact.firstName;
+    document.getElementById("last-name-show").innerText = foundContact.lastName;
+    document.getElementById("email-show").innerText = foundContact.email;
+    document.getElementById("phone-show").innerText = foundContact.phone;
+    document.getElementById("city-show").innerText = foundContact.city;
+    document.getElementById("gender-show").innerHTML = foundContact.gender == "male" ? '<span class="inline-flex items-center rounded-md bg-transparent px-2 py-1 text-xs font-medium text-sky-400 ring-1 ring-inset ring-sky-400">Male</span>' : '<span class="inline-flex items-center rounded-md bg-transparent px-2 py-1 text-xs font-medium text-red-400 ring-1 ring-inset ring-red-400">Female</span>'
+
+    singleContact.classList.remove("hidden");
+    singleContact.classList.remove("z-10");
+}
+
+closeSingleContact.addEventListener("click", () => {
+    singleContact.classList.add("hidden");
+    singleContact.classList.add("z-10");
+})
 
 contactForm.addEventListener("submit", e => {
     e.preventDefault();
