@@ -226,7 +226,7 @@ const createListItem = ( contact ) => {
             <button data-id="${ contact.id }" onclick="showUpdateForm(this)" class="bg-yellow-500 border-2 border-yellow-500 transition ease-in-out delay-150 hover:bg-transparent hover:text-yellow-500 text-blue-950 font-bold text-sm ml-3 px-2 md:px-4 rounded-md ">
                 <i class="fa-regular fa-pen-to-square"></i>
             </button>
-            <button data-id="${ contact.id }" onclick="showSingleContact(this)" class="bg-red-500 border-2 border-red-500 transition ease-in-out delay-150 hover:bg-transparent hover:text-red-500 text-blue-950 font-bold text-sm ml-3 px-2 md:px-4 rounded-md ">
+            <button data-id="${ contact.id }" onclick="deleteContact(this)" class="bg-red-500 border-2 border-red-500 transition ease-in-out delay-150 hover:bg-transparent hover:text-red-500 text-blue-950 font-bold text-sm ml-3 px-2 md:px-4 rounded-md ">
                 <i class="fa-solid fa-trash"></i>
             </button>
         </div>
@@ -292,6 +292,14 @@ const showUpdateForm = ( e ) => {
     addContactModal.classList.remove("z-10");
 
 
+}
+
+const deleteContact = ( e ) => {
+    const contactId = parseInt(e.dataset.id);
+    foundContact = findContact( contactId );
+
+    const contactItem = document.getElementById(`contact-item-${ foundContact.id }`);
+    contactsList.removeChild( contactItem )
 }
 
 contactForm.addEventListener("submit", e => {
