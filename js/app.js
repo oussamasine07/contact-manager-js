@@ -300,6 +300,9 @@ const deleteContact = ( e ) => {
 
     const contactItem = document.getElementById(`contact-item-${ foundContact.id }`);
     contactsList.removeChild( contactItem )
+
+    contacts = contacts.filter( contact => contact.id != foundContact.id );
+    localStorage.setItem("contacts", JSON.stringify(contacts));
 }
 
 contactForm.addEventListener("submit", e => {
