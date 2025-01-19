@@ -190,7 +190,7 @@ const clearInputs = () => {
 
 const createListItem = ( contact ) => {
     const contactItem = document.createElement("li");
-    contactItem.className = "flex justify-between gap-x-6 py-5";
+    contactItem.className = "flex justify-between gap-x-6 py-2 md:py-6";
     contactItem.id = `contact-item-${ contact.id }`;
 
     contactItem.innerHTML = `
