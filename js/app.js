@@ -5,16 +5,6 @@ const addContactBtn = document.getElementById("add-contact-btn");
 
 const closeAddContact = document.getElementById("close-add-contact");
 
-addContactBtn.addEventListener("click", () => {
-    addContactModal.classList.remove("hidden");
-    addContactModal.classList.remove("z-10");
-});
-
-closeAddContact.addEventListener("click", () => {
-    addContactModal.classList.add("hidden");
-    addContactModal.classList.add("z-10");
-});
-
 // select all input elements
 const contactForm = document.getElementById("contact-form");
 const firstNameInput = document.getElementById("first-name");
@@ -35,11 +25,37 @@ const contactsList = document.getElementById("contacts-list");
 const singleContact = document.getElementById("show-single-contact");
 const closeSingleContact = document.getElementById("close-single-contact");
 
+const clearInputs = () => {
+    firstNameInput.value = "";
+    lastNameInput.value = "";
+    emailInput.value = "";
+    cityInput.value = "";
+    phoneInput.value = "";
+}
+
+let formType = "";
+
+addContactBtn.addEventListener("click", () => {
+    addContactModal.classList.remove("hidden");
+    addContactModal.classList.remove("z-10");
+    formType = "add";
+});
+
+closeAddContact.addEventListener("click", () => {
+    addContactModal.classList.add("hidden");
+    addContactModal.classList.add("z-10");
+    clearInputs();
+    formType = "";
+});
+
+
+
 // declare error object
 let error = {
     isError: false,
     message: ""
 }
+
 
 // validate empty
 const isEmpty = ( input ) => {
@@ -180,13 +196,6 @@ phoneInput.addEventListener("blur", () => {
     }
 });
 
-const clearInputs = () => {
-    firstNameInput.value = "";
-    lastNameInput.value = "";
-    emailInput.value = "";
-    cityInput.value = "";
-    phoneInput.value = "";
-}
 
 const createListItem = ( contact ) => {
     const contactItem = document.createElement("li");
@@ -197,8 +206,8 @@ const createListItem = ( contact ) => {
         <div class="flex min-w-0 gap-x-4 items-center">
             <img class="size-12 flex-none rounded-full bg-gray-50" src="/assets/person.jpg" alt="">
             <div class="min-w-0 flex-auto">
-                <p class="text-sm/6 font-semibold text-sky-100">${ contact.firstName } ${ contact.lastName }</p>
-                <p class="mt-1 truncate text-sm text-blue-300 hidden md:block">${ contact.email }</p>
+                <p class="text-sm/6 font-semibold text-sky-100" id="list-fullname-${ contact.id }">${ contact.firstName } ${ contact.lastName }</p>
+                <p class="mt-1 truncate text-sm text-blue-300 hidden md:block" id="list-email-${ contact.id }">${ contact.email }</p>
             </div>
         </div>
         <div class=" flex justify-between items-center">
@@ -211,7 +220,15 @@ const createListItem = ( contact ) => {
             }
             
 
-            <button data-id="${ contact.id }" onclick="showSingleContact(this)" class="bg-blue-500 border-2 border-blue-500 transition ease-in-out delay-150 hover:bg-transparent text-white font-bold text-sm ml-3 px-4 rounded-md ">show</button>
+            <button data-id="${ contact.id }" onclick="showSingleContact(this)" class="bg-blue-500 border-2 border-blue-500 transition ease-in-out delay-150 hover:bg-transparent hover:text-blue-500 text-blue-950 font-bold text-sm ml-3 px-2 md:px-4 rounded-md ">
+                <i class="fa-solid fa-eye"></i>
+            </button>
+            <button data-id="${ contact.id }" onclick="showUpdateForm(this)" class="bg-yellow-500 border-2 border-yellow-500 transition ease-in-out delay-150 hover:bg-transparent hover:text-yellow-500 text-blue-950 font-bold text-sm ml-3 px-2 md:px-4 rounded-md ">
+                <i class="fa-regular fa-pen-to-square"></i>
+            </button>
+            <button data-id="${ contact.id }" onclick="showSingleContact(this)" class="bg-red-500 border-2 border-red-500 transition ease-in-out delay-150 hover:bg-transparent hover:text-red-500 text-blue-950 font-bold text-sm ml-3 px-2 md:px-4 rounded-md ">
+                <i class="fa-solid fa-trash"></i>
+            </button>
         </div>
     `;
 
@@ -227,13 +244,17 @@ const listContacts = ( contacts ) => {
 
 
 // add contact functionality
-const contacts = localStorage.getItem("contacts") ? JSON.parse(localStorage.getItem("contacts")) : [];
+let contacts = localStorage.getItem("contacts") ? JSON.parse(localStorage.getItem("contacts")) : [];
 
 listContacts( contacts );
 
+const findContact = contactId => contacts.filter( contact => contact.id == contactId )[0];
+
+let foundContact = {}
+
 const showSingleContact = ( e ) => {
     const contactId = parseInt(e.dataset.id);
-    const foundContact = contacts.filter( contact => contact.id == contactId )[0];
+    foundContact = findContact( contactId );
 
     document.getElementById("first-name-show").innerText = foundContact.firstName;
     document.getElementById("last-name-show").innerText = foundContact.lastName;
@@ -249,12 +270,34 @@ const showSingleContact = ( e ) => {
 closeSingleContact.addEventListener("click", () => {
     singleContact.classList.add("hidden");
     singleContact.classList.add("z-10");
+    foundContact = {}
 })
+
+const showUpdateForm = ( e ) => {
+    const contactId = parseInt(e.dataset.id);
+    formType = "update";
+    foundContact = findContact( contactId );
+
+    firstNameInput.value = foundContact.firstName
+    lastNameInput.value = foundContact.lastName
+    emailInput.value = foundContact.email
+
+    if ( foundContact.gender == "male" ) genderMaleRadio.checked = true;
+
+    if ( foundContact.gender == "female" ) genderFemaleRadio.checked = true;
+    
+    phoneInput.value = foundContact.phone
+
+    addContactModal.classList.remove("hidden");
+    addContactModal.classList.remove("z-10");
+
+
+}
 
 contactForm.addEventListener("submit", e => {
     e.preventDefault();
+
     const newContact = {
-        id: contacts.length > 0 ? contacts[contacts.length - 1 ].id + 1 : 1,
         firstName: firstNameInput.value,
         lastName: lastNameInput.value,
         email: emailInput.value,
@@ -263,14 +306,35 @@ contactForm.addEventListener("submit", e => {
         city: cityInput.value 
     }
 
-    contacts.push(newContact);
+    switch ( formType ) {
+        case "add":
+            newContact.id = contacts.length > 0 ? contacts[contacts.length - 1 ].id + 1 : 1,
+            contacts.push(newContact);
+        
+            localStorage.setItem("contacts", JSON.stringify(contacts));
+            clearInputs();
+            closeAddContact.click();
+        
+            setTimeout(() => {
+                createListItem( newContact );
+            }, 700)
 
-    localStorage.setItem("contacts", JSON.stringify(contacts));
-    clearInputs();
-    closeAddContact.click();
+            break;
 
-    setTimeout(() => {
-        createListItem( newContact );
-    }, 700)
+        case "update":
+            contacts = contacts.map( contact => contact.id == foundContact.id ? {...contact, ...newContact} : contact );
+        
+            localStorage.setItem("contacts", JSON.stringify(contacts));
+            // update UI
+            document.getElementById(`list-fullname-${ foundContact.id }`).innerText = `${ newContact.lastName } ${ newContact.firstName }`
+            document.getElementById(`list-email-${ foundContact.id }`).innerText = `${ newContact.email }`
+
+            
+            clearInputs();
+            
+            closeAddContact.click();
+            break
+    }
+    
 
 });
