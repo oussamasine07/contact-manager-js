@@ -30,6 +30,8 @@ const lastNameContainer = document.getElementById("last-name-container");
 const emailContainer = document.getElementById("email-container");
 const phoneContainer = document.getElementById("phone-container");
 
+const contactsList = document.getElementById("contacts-list");
+
 // declare error object
 let error = {
     isError: false,
@@ -175,9 +177,55 @@ phoneInput.addEventListener("blur", () => {
     }
 });
 
+const clearInputs = () => {
+    firstNameInput.value = "";
+    lastNameInput.value = "";
+    emailInput.value = "";
+    cityInput.value = "";
+    phoneInput.value = "";
+}
+
+const createListItem = ( contact ) => {
+    const contactItem = document.createElement("li");
+    contactItem.className = "flex justify-between gap-x-6 py-5";
+    contact.id = `contact-item-${ contact.id }`;
+
+    contactItem.innerHTML = `
+        <div class="flex min-w-0 gap-x-4">
+            <img class="size-12 flex-none rounded-full bg-gray-50" src="/assets/person.jpg" alt="">
+            <div class="min-w-0 flex-auto">
+                <p class="text-sm/6 font-semibold text-sky-100">${ contact.firstName } ${ contact.lastName }</p>
+                <p class="mt-1 truncate text-sm text-blue-300">${ contact.email }</p>
+            </div>
+        </div>
+        <div class=" flex justify-between items-center">
+            ${
+                contact.gender == "male" 
+                ? 
+                    '<span class="inline-flex items-center rounded-md bg-transparent px-2 py-1 text-xs font-medium text-sky-400 ring-1 ring-inset ring-sky-400">Male</span>' 
+                : 
+                    '<span class="inline-flex items-center rounded-md bg-transparent px-2 py-1 text-xs font-medium text-red-400 ring-1 ring-inset ring-red-400">Female</span>'
+            }
+            
+
+            <button class="bg-blue-500 border-2 border-blue-500 transition ease-in-out delay-150 hover:bg-transparent text-white font-bold text-sm ml-3 px-4 rounded-md ">show</button>
+        </div>
+    `;
+
+    contactsList.appendChild( contactItem )
+}
+
+const listContacts = ( contacts ) => {
+   
+    contacts.forEach(contact => {
+        createListItem( contact );
+    });
+}
+
 // add contact functionality
 const contacts = localStorage.getItem("contacts") ? JSON.parse(localStorage.getItem("contacts")) : [];
 
+listContacts( contacts );
 
 contactForm.addEventListener("submit", e => {
     e.preventDefault();
@@ -193,5 +241,12 @@ contactForm.addEventListener("submit", e => {
 
     contacts.push(newContact);
 
-    localStorage.setItem("contact", JSON.stringify(contacts))
+    localStorage.setItem("contacts", JSON.stringify(contacts));
+    clearInputs();
+    closeAddContact.click();
+
+    setTimeout(() => {
+        createListItem( newContact );
+    }, 700)
+
 });
